@@ -1,17 +1,17 @@
 <template>
     <div>
-        <!-- <form @submit.prevent="createLocation"> -->
+        <!-- <form @submit.prevent="createCategory"> -->
             <div class="create-location-form input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text">Name</span>
                 </div>
-                <input v-model="newLocationName" type="text" class="form-control" placeholder="Location Name" />
+                <input v-model="newCategoryName" type="text" class="form-control" placeholder="Category Name" />
                 <div class="input-group-append">
-                    <button v-if="!editLocationId" class="btn btn-primary" @click="createLocation()">Create</button>
-                    <button v-else class="btn btn-info btn-sm" @click="updateLocation()">Update</button>
+                    <button v-if="!editCategoryId" class="btn btn-primary" @click="createCategory()">Create</button>
+                    <button v-else class="btn btn-info btn-sm" @click="updateCategory()">Update</button>
                 </div>
             </div>
-            <button type="button" class="btn btn-sm text-danger float-right" @click="resetLocation()">Reset</button>
+            <button type="button" class="btn btn-sm text-danger float-right" @click="resetCategory()">Reset</button>
         <!-- </form> -->
         <table class="table table-striped table-bordered">
             <thead class="thead-dark">
@@ -20,12 +20,12 @@
                 <th></th>
             </thead>
             <tbody>
-                <tr v-for="row in locations" :key="row.id">
+                <tr v-for="row in categories" :key="row.id">
                     <td>{{ row.id }}</td>
                     <td>{{ row.name }}</td>
                     <td align="center">
-                        <button class="btn btn-danger btn-sm" @click.prevent="deleteLocation(row.id)"><i class="fa fa-times" /> Delete</button>
-                        <button class="btn btn-info btn-sm" @click="editLocation(row.id, row.name)"><i class="fa fa-pencil-square-o" /> Edit</button>
+                        <button class="btn btn-danger btn-sm" @click.prevent="deleteCategory(row.id)"><i class="fa fa-times" /> Delete</button>
+                        <button class="btn btn-info btn-sm" @click="editCategory(row.id, row.name)"><i class="fa fa-pencil-square-o" /> Edit</button>
                     </td>
                 </tr>
             </tbody>
@@ -39,59 +39,59 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            locations: [],
-            newLocationName: '',
-            editLocationId : '',
+            categories: [],
+            newCategoryName: '',
+            editCategoryId : '',
             editIndex: '',
             timestamp: ''
         };
     },
     mounted() {
-        this.getLocations();
+        this.getCategories();
     },
     methods: {
-        getLocations() {
-            return axios.get('/api/locations')
+        getCategories() {
+            return axios.get('/api/categories')
                 .then(response => {
-                    this.locations = response.data;
+                    this.categories = response.data;
                 }).catch(console.error);
         },
-        createLocation() {
-            return axios.post('/api/locations', {name: this.newLocationName})
-                .then(this.getLocations)
-                .then(() => this.newLocationName = '')
+        createCategory() {
+            return axios.post('/api/categories', {name: this.newCategoryName})
+                .then(this.getCategories)
+                .then(() => this.newCategoryName = '')
                 .catch(console.error);
         },
-        deleteLocation(id) {
-            return axios.post('/api/locations/' + id, {_method: 'DELETE'})
-                .then(this.getLocations)
+        deleteCategory(id) {
+            return axios.post('/api/categories/' + id, {_method: 'DELETE'})
+                .then(this.getCategories)
                 .catch(console.error);
         },
-        editLocation(id, name){
+        editCategory(id, name){
             if(id){
-                this.newLocationName = name;
-                this.editLocationId = id;
+                this.newCategoryName = name;
+                this.editCategoryId = id;
                 this.editIndex = id
             }
         },
-        updateLocation(){
+        updateCategory(){
             this.getNow()
             console.log(this.timestamp)
             const data = {
                 updated_at: this.timestamp,
-                name: this.newLocationName
+                name: this.newCategoryName
             }
-            console.log("id:", this.editLocationId);
-            console.log("name:", this.newLocationName);
+            console.log("id:", this.editCategoryId);
+            console.log("name:", this.newCategoryName);
             console.log("data: ", data)
-            return axios.put('api/locations/' + this.editLocationId, data)
-                 .then(this.getLocations)
+            return axios.put('api/categories/' + this.editCategoryId, data)
+                 .then(this.getCategories)
                  .catch(console.error);
         },
-        resetLocation(){
-            this.newLocationName = '';
+        resetCategory(){
+            this.newCategoryName = '';
             this.editIndex = '';
-            this.editLocationId = '';
+            this.editCategoryId = '';
             this.timestamp = '';
         },
         getNow(){
