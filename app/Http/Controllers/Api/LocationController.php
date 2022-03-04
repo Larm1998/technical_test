@@ -18,6 +18,12 @@ class LocationController extends Controller
         Location::create(['name' => $request->input('name')]);
     }
 
+    public function update(Request $request, $id){
+        $location = Location::find($id);
+        $location->update($request->all());
+        return response()->json('Location Updated!');
+    }   
+
     public function destroy(Location $location)
     {
         $location->delete();
