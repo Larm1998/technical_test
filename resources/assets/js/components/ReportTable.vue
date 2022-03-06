@@ -6,16 +6,15 @@
         <!-- </form> -->
         <table class="table table-striped table-bordered">
             <thead class="thead-dark">
-                <th>ID</th>
+                <th>Location</th>
                 <th>Name</th>
-                <th></th>
+                <th>Count</th>
             </thead>
             <tbody>
                 <tr v-for="row in Report" :key="row.id">
-                    <td>{{ row.id }}</td>
-                    <td>{{ row.name }}</td>
-                    <td align="center">
-                    </td>
+                    <td>{{ row.Location }}</td>
+                    <td>{{ row.Category }}</td>
+                    <td>{{ row.count }}</td>
                 </tr>
             </tbody>
         </table>
